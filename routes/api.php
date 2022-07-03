@@ -44,5 +44,11 @@ Route::middleware('auth')
             });
 
         Route::apiResource('blog', BlogController::class);
+
+        Route::middleware(['verify-user-type:reader', 'set-blog-type'])
+            ->group(function () {
+                Route::patch('comment', [CommentController::class, 'update']);
+                Route::delete('comment', [CommentController::class, 'destroy']);
+            });
         Route::apiResource('comment', CommentController::class);
     });
